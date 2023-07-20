@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\SummeryController;
 
 
 
@@ -15,8 +16,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('user', [AuthController::class, 'user']);
     Route::delete('logout', [AuthController::class, 'logout']);
-
     # task 
     Route::apiResource('tasks', TaskController::class);
-    Route::get('/tasks/summery', [TaskController::class, 'TaskSummery']);
+    Route::get('/task/summery', [SummeryController::class, 'TaskSummery']);
 });

@@ -11,24 +11,11 @@ use Illuminate\Support\Facades\Validator;
 class TaskController extends Controller
 {
 
-    // public function TaskSummery(Request $request)
-    // {
-    //     // $active = Task::getTaskByStatus($request->user()->id,1);
-    //     // $inactive = Task::getTaskByStatus($request->user()->id,0);
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'All tasks',
-    //         'active' => $active,
-    //         'inactive' => $inactive,
-    //     ]);
-    // }
-
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        // $tasks = Task::where('user_id',$request->user()->id)->latest('id')->get();
         $tasks = Task::getTask($request->user()->id);
         return response()->json([
             'success' => true,
@@ -36,7 +23,6 @@ class TaskController extends Controller
             'data' =>$tasks ,
         ]);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -119,7 +105,6 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-      
         $task->delete();
         return response()->json([
             'success' => true,
