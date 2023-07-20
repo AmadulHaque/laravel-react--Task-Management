@@ -18,4 +18,5 @@ Route::middleware('auth:sanctum')->group(function() {
 
     # task 
     Route::apiResource('tasks', TaskController::class);
+    Route::get('/tasks/summery', [TaskController::class, 'TaskSummery']);
 });

@@ -14,4 +14,18 @@ class Task extends Model
         'description',
         'status',
     ];
+
+    public static function getTask($user_id)
+    {
+        $data = self::where('user_id',$user_id)->latest('id')->get();
+        return $data;
+    }
+
+    public static function getTaskByStatus($user_id,$status)
+    {
+        $data = self::where('user_id',$user_id)->where('status',$status)->latest('id')->get();
+        return $data;
+    }
+
+
 }

@@ -10,17 +10,30 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
+
+    // public function TaskSummery(Request $request)
+    // {
+    //     // $active = Task::getTaskByStatus($request->user()->id,1);
+    //     // $inactive = Task::getTaskByStatus($request->user()->id,0);
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'All tasks',
+    //         'active' => $active,
+    //         'inactive' => $inactive,
+    //     ]);
+    // }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $tasks = Task::latest('id')->get();
+        // $tasks = Task::where('user_id',$request->user()->id)->latest('id')->get();
+        $tasks = Task::getTask($request->user()->id);
         return response()->json([
             'success' => true,
             'message' => 'All tasks',
-            'data' => $tasks,
+            'data' =>$tasks ,
         ]);
     }
 
@@ -31,7 +44,6 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer',
             'title' => 'required|string|max:280|unique:tasks',
             'description' => 'required|string',
             'status' => 'required|string',
@@ -46,6 +58,7 @@ class TaskController extends Controller
             ], 422);
         }
         $data = $validator->validated();
+        $data['user_id'] = $request->user()->id;
         // store a new post
         Task::create($data);
 
