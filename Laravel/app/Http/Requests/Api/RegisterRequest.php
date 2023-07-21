@@ -43,7 +43,7 @@ class RegisterRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response = (new ErrorResource($validator->errors()))->response()->setStatusCode(422);
+        $response = (new ErrorResource($validator->errors()))->response()->setStatusCode(200);
         throw new ValidationException($validator, $response);
     }
 }

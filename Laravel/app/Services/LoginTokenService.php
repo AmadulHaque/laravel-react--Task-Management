@@ -24,7 +24,8 @@ trait LoginTokenService
             $response = [
                 'message' => 'Login Token Generated Successfully!',
                 'data' => [
-                    'token' => $token->plainTextToken
+                    'token' => $token->plainTextToken,
+                    'user' =>  $user
                 ]
             ];
 
@@ -32,6 +33,6 @@ trait LoginTokenService
         }
 
         $errors['email'][] = __('auth.failed');
-        return (new ErrorResource($errors))->response()->setStatusCode(422);
+        return (new ErrorResource($errors))->response()->setStatusCode(200);
     }
 }

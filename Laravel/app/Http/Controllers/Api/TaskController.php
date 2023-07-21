@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Events\PodcastProcessed;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -32,7 +33,7 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:280|unique:tasks',
             'description' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'required',
         ]);
 
         // return form validation error with json if error occured
@@ -45,9 +46,14 @@ class TaskController extends Controller
         }
         $data = $validator->validated();
         $data['user_id'] = $request->user()->id;
+        $postData = [
+            'user' => $request->user()->name,
+            'title' => $request->title,
+        ];
+        PodcastProcessed::dispatch($postData);
+
         // store a new post
         Task::create($data);
-
         return response()->json([
             'success' => true,
             'message' => 'Task created successfully!',
@@ -77,7 +83,7 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:280|unique:tasks,title,' . $task->id,
             'description' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'required',
         ]);
 
         // return form validation error with json if error occured
